@@ -13,10 +13,9 @@ app.get('/', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-  console.log('a user connected')
-  socket.on('s', (msg) => {
-    console.log(msg)
-    socket.emit('r', `Hello from ${os.hostname()}`)
+  socket.on('join-room', (data) => {
+    socket.join(data.roomId)
+    socket.broadcast.to(data.roomId).emit('user-joined', data)
   })
 })
 
