@@ -14,9 +14,12 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   socket.on('join-room', (data) => {
-    console.log(data)
     socket.join(data.roomId)
     socket.broadcast.to(data.roomId).emit('user-joined', data)
+  })
+
+  socket.on('send-message', (data) => {
+    socket.broadcast.to(data.roomId).emit('incoming-message', data)
   })
 })
 
